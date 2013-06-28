@@ -1,0 +1,64 @@
+@import @"version.inc";
+
+nuget {
+	nuspec {
+		id = libxslt;
+		version : ${package-version};
+		title: "libxslt";
+		authors: {libxslt contributors};
+		owners: {CoApp Project};
+		licenseUrl: "http://opensource.org/licenses/mit-license.html";
+		iconUrl: "http://xmlsoft.org/XSLT/Libxslt-Logo-180x168.gif";
+		projectUrl: "http://github.com/coapp-packages/libxslt";
+		requireLicenseAcceptance:false;
+		summary: "Libxslt is an XSLT C library.";
+		description: @"Libxslt is the XSLT C library developed for the GNOME project. XSLT itself is a an XML language to define transformation for XML. Libxslt is based on libxml2 the XML C library developed for the GNOME project. It also implements most of the EXSLT set of processor-portable extensions functions and some of Saxon's evaluate and expressions extensions.
+
+People can either embed the library in their application or use xsltproc the command line processing tool. This library is free software and can be reused in commercial applications
+
+Homepage: http://xmlsoft.org/XSLT/";
+		releaseNotes: "Release of 1.1.28 libraries.";
+		copyright: Copyright 2013;
+		tags: { xslt libxslt exslt native CoApp };
+
+	};
+
+	files {
+		includeXslt: {
+            #destination = ${d_include}\libxslt;
+			..\libxslt\*.h,
+        };
+		includeExslt: {
+            #destination = ${d_include}\libexslt;
+			..\libexslt\*.h,
+        };
+
+		docs: { ..\doc\**\* };
+
+		source += {
+			..\**\*.c,
+			..\**\*.h,
+		};
+
+		("v100,v110", "Win32,x64", "release,debug", "Dynamic,Static,ltcg") => {
+			[${0},${1},${2},${3}] {
+				lib:     { .\output\${0}\${1}\${2}\${3}\libxslt.lib;
+                           .\output\${0}\${1}\${2}\${3}\libexslt.lib; };
+                tools:   { .\output\${0}\${1}\${2}\${3}\xsltproc.exe; };
+			};
+		};
+		("v100,v110", "Win32,x64", "release,debug", "Dynamic") => {
+			[${0},${1},${2},${3}] {
+				bin:     { .\output\${0}\${1}\${2}\${3}\libxslt.dll;
+                           .\output\${0}\${1}\${2}\${3}\libexslt.dll; };
+				symbols: { .\output\${0}\${1}\${2}\${3}\libxslt.pdb;
+                           .\output\${0}\${1}\${2}\${3}\libexslt.pdb; };
+			};
+		};
+	};
+
+	targets {
+		Defines += HAS_LIBXSLT;
+	};
+}
+

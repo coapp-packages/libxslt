@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<!--
+  <PropertyGroup>
+	<Linkage-libxml2>$(UsesConfigurationType)</Linkage-libxml2>
+	<Linkage-libxml2_redist>$(UsesConfigurationType)</Linkage-libxml2_redist>
+	<CallingConvention-libxml2>$(CallingConvention)</CallingConvention-libxml2>
+  </PropertyGroup>
+-->
+  <Import Project="$(MSBuildThisFileDirectory)packages\libxml2\build\native\libxml2.props" Condition="exists('$(MSBuildThisFileDirectory)packages\libxml2\build\native\libxml2.props')"/>
+  <Import Project="$(MSBuildThisFileDirectory)packages\libxml2.redist\build\native\libxml2.redist.props" Condition="exists('$(MSBuildThisFileDirectory)packages\libxml2.redist\build\native\libxml2.redist.props')"/>
+  <Import Project="$(MSBuildThisFileDirectory)packages\libiconv\build\native\libiconv.props" Condition="exists('$(MSBuildThisFileDirectory)packages\libiconv\build\native\libiconv.props')"/>
+  <Import Project="$(MSBuildThisFileDirectory)packages\libiconv.redist\build\native\libiconv.redist.props" Condition="exists('$(MSBuildThisFileDirectory)packages\libiconv.redist\build\native\libiconv.redist.props')"/>
+</Project>

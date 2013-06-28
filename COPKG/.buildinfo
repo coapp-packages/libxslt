@@ -1,0 +1,58 @@
+@import default_tools;
+@import "version.inc";
+
+default {
+
+    .Copy {
+        SourceFiles : {
+            $(MSBuildThisFileDirectory).\xsltconfig.h,
+            $(MSBuildThisFileDirectory).\exsltconfig.h,
+            $(MSBuildThisFileDirectory).\config.h,
+        };
+        DestinationFiles : {
+            $(MSBuildThisFileDirectory)..\libxslt\xsltconfig.h,
+            $(MSBuildThisFileDirectory)..\libexslt\exsltconfig.h,
+            $(MSBuildThisFileDirectory)..\config.h,
+        };
+    };
+
+    .Exec {
+        Condition="Exists('$(MSBuildThisFileDirectory)packages.config')";
+        Command = @"nuget install $(MSBuildThisFileDirectory)packages.config -x -OutputDirectory .\packages";
+    };
+
+    (PlatformToolsets, Architectures, ReleaseOrDebug, Linkage) => {
+        .MSBuildEx {
+            LoadEnvironmentFromTargets = VC_${0}_${1};
+            StartMessage = @"        Env:        ${0}-${1}  :  ${2}  ${3}";
+            //SkipMessage = @"SkippingEnv:        ${0}-${1}  :  ${2}  ${3}";
+//            Properties = @"VerString=${package-version};PlatformToolset=${0};Platform=${1};Configuration=${2};UsesConfigurationType=${3};";
+//            Projects = "libxslt.vcxproj;libexslt.vcxproj;xsltproc.vcxproj;";
+
+            Properties: {
+                PlatformToolset=${0};
+                Platform=${1};
+                Configuration=${2};
+                UsesConfigurationType=${3};
+                VerString=${package-version};
+            };
+
+            Projects: {
+                libxslt.vcxproj;
+                libexslt.vcxproj;
+                xsltproc.vcxproj;
+            };
+            
+        };
+	};
+	.WaitForTasks{};
+};
+
+clean {
+    .RemoveDir.Directories = @"$(MSBuildThisFileDirectory)intermediate";
+};
+
+nuke {
+    .RemoveDir.Directories = @"$(MSBuildThisFileDirectory)intermediate";
+    .RemoveDir.Directories = @"$(MSBuildThisFileDirectory)output";
+};

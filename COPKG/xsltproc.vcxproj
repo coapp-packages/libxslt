@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="PreBuildCmds;PreBuildTargets;Build;PostBuildCmds;PostBuildTargets" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="CoApp" >
+    <CoAppEtcDirectory>$(registry:HKEY_LOCAL_MACHINE\Software\Outercurve\CoApp.Powershell\etc)</CoAppEtcDirectory>
+  </PropertyGroup>
+  
+  <Import Condition="Exists('$(CoAppEtcDirectory)\common-variables.vcxproj')" Project="$(CoAppEtcDirectory)\common-variables.vcxproj" />
+  <PropertyGroup Label="CustomSettings" />
+  
+  <PropertyGroup Label="ConfigurationSettings">
+    <!-- set to Application or DynamicLibrary (DynamicLibrary can get altered to StaticLibrary by PTK -->
+    <ConfigurationType>Application</ConfigurationType>
+
+    <!-- Common Compiler Defines (semicolon delimited) -->
+    <Defines>WIN32;_WINDOWS;_MBCS;_REENTRANT;_CRT_SECURE_NO_DEPRECATE;_CRT_NONSTDC_NO_DEPRECATE;XSLT_REFACTORED;XSLT_REFACTORED_XSLT_NSCOMP</Defines>
+    <Defines Condition="!$(IS_DYNAMIC)">$(Defines);LIBXSLT_STATIC;LIBEXSLT_STATIC</Defines>
+
+    <!-- Additional Include folders (semicolon delimited) -->
+    <IncludeDirectories>..\;..\libxslt;</IncludeDirectories>
+
+    <!-- Additional Library folders (semicolon delimited) -->
+    <LibraryDirectories></LibraryDirectories>
+
+    <!-- Libraries to Link with -->
+    <Libraries>wsock32.lib;libxslt.lib;libexslt.lib</Libraries>
+    
+    <!-- Batch script to run before Build-->
+    <PreBuild></PreBuild>
+
+    <!-- Batch script to run after Build-->
+    <PostBuild></PostBuild>
+
+    <!-- Batch script to run before Link step-->
+    <PreLink></PreLink>
+
+    <!-- Batch script to run after Link-->
+    <PostLink></PostLink>
+
+    <!-- Batch script to run before Lib step-->
+    <PreLib></PreLib>
+
+    <!-- Batch script to run after Lib-->
+    <PostLib></PostLib>
+
+    <!-- Targets to run before Build (semcolon delimited)-->
+    <PreBuildTargets></PreBuildTargets>
+
+    <!-- Targets to run before Build (semcolon delimited)-->
+    <PostBuildTargets></PostBuildTargets>
+  
+    <!-- for Dynamic libs, you can specify the Module .DEF file path -->
+    <ModuleDefinitionFile></ModuleDefinitionFile>
+    
+    <!--
+    <VerStr Condition="'$(VerString)'!=''">$(VerString.Split('.')[0]).$(VerString.Split('.')[1])</VerStr>
+    -->
+  </PropertyGroup>
+
+  <Import Condition="Exists('$(CoAppEtcDirectory)\common-header.vcxproj')" Project="$(CoAppEtcDirectory)\common-header.vcxproj" />
+  <!--
+  <ItemDefinitionGroup>
+    <Link>
+      <Version Condition="'$(VerStr)'!=''">$(VerStr)</Version>
+    </Link>
+  </ItemDefinitionGroup>
+  -->
+  <ItemGroup Label="C Source Files">
+    <!-- Include the source files to compile here -->
+    <!-- <ClCompile Include="..\src\foo.c" /> -->
+    <ClCompile Include="..\xsltproc\xsltproc.c" />
+  </ItemGroup>
+
+  <ItemGroup Label="Resource Files">
+    <!-- Include the source files to compile here -->
+    <!-- <ResourceCompile Include="..\src\foo.rc" /> -->
+  </ItemGroup>
+
+  <Import Condition="Exists('$(CoAppEtcDirectory)\common-footer.vcxproj')" Project="$(CoAppEtcDirectory)\common-footer.vcxproj" />
+</Project>
